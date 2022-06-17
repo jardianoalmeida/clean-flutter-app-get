@@ -9,6 +9,18 @@ class RemoteAutentication {
 
   @override
   Future<void> auth(AutenticationParams params) async {
-    await httpClient.request(url: url, method: 'post', body: params.toJson());
+    final body = RemoteAutenticationParams.fromDomain(params).toJson();
+    await httpClient.request(url: url, method: 'post', body: body);
   }
+}
+
+class RemoteAutenticationParams {
+  final String email;
+  final String password;
+
+  RemoteAutenticationParams({required this.email, required this.password});
+
+  factory RemoteAutenticationParams.fromDomain(AutenticationParams entity) =>
+      RemoteAutenticationParams(email: entity.email, password: entity.secret);
+  Map toJson() => {'email': email, 'password': password};
 }
