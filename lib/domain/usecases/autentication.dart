@@ -4,11 +4,9 @@ abstract class Autentication {
   Future<AccountEntity> auth(AutenticationParams params);
 }
 
-
-
 class AutenticationParams {
-      final String email;
-    final String assword;
+  final String email;
+  final String secret;
 
-  AutenticationParams({required this.email, required this.assword});
+  AutenticationParams({required this.email, required this.secret});
 }
