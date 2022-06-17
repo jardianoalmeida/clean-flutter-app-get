@@ -1,5 +1,5 @@
 import 'package:ForDev/data/http/http.dart';
-import 'package:ForDev/data/usercases/remote_autentication.dart';
+import 'package:ForDev/data/usercases/usecases.dart';
 import 'package:ForDev/domain/helpers/helpers.dart';
 import 'package:ForDev/domain/usecases/usecases.dart';
 import 'package:faker/faker.dart';
@@ -108,5 +108,21 @@ void main() {
     final accaunt = await sut.auth(params);
 
     expect(accaunt.token, accessToken);
+  });
+
+  test(
+      'Should throws UnexpectedError if HttpClient returns 200 with invalid data',
+      () async {
+    when(httpClient.request(
+      url: anyNamed('url'),
+      method: anyNamed('method'),
+      body: anyNamed('body'),
+    )).thenAnswer((_) async => {
+          'invalid_key': 'invalid_value',
+        });
+
+    final future = sut.auth(params);
+
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
